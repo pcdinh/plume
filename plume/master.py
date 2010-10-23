@@ -52,16 +52,19 @@ class FlumeMaster(object):
     def get_configs(self):
         configs = self.client.getConfigs()
         return dict((k, v.__dict__) for k, v in configs.items())
-
+    
     def has_cmdid(self, cmdid):
         return self.client.hasCmdId(cmdid)
-
+    
     def get_mappings(self, physicalnode):
         return self.client.getMappings(physicalnode)
-
-    def config(self, node, source, sink):
-        self.execute("config", node, source, sink)
-
+    
+    def config(self, node, source, sink, flow=None):
+        if flow:
+            self.execute("config", node, flow, source, sink)
+        else:
+            self.execute("config", node, source, sink)
+    
     def decommission(self, logicalnode):
         self.execute("decommission", logicalnode)
 
