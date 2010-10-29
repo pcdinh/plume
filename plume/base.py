@@ -45,7 +45,8 @@ class PlumeMaster(object):
         if lname not in self.logical_nodes or self.statuses[lname]['physicalNode'] != pname:
             self.log.info("Spawned {logical} on {physical}".format(logical=lname, physical=pname))
             self.master.spawn(pname, lname)
-        if lname not in self.configs:
+        config = self.configs.get(lname)
+        if not config or config['sourceConfig'] != source or config['sinkConfig'] != sink or config['flowID'] != flow:
             self.log.info("Configuring {logical}".format(logical=lname))
             self.master.config(lname, source, sink, flow)
 
